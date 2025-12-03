@@ -22,13 +22,6 @@ php -v
 ```
 - **Composer**: 2.4.1
 - **MySQL**: 6.x (from Laragon)
-- **Node.js**: 24.x
-- **Tailwind CSS**: 11.6.2
-```
-
-npx tailwindcss -v
-
-````
 
 Semua tools berjalan normal pada environment Windows menggunakan Laragon.
 
@@ -38,17 +31,14 @@ Semua tools berjalan normal pada environment Windows menggunakan Laragon.
 
 - Laravel 12
 - MySQL
-- Tailwind CSS
-- Vite Hot Module Reloading (Auto Refresh)
-- Blade Components
 
 ---
 
 ## 🔧 Instalasi & Setup Project
 
-### Create Laravel Project
+### Clone repo ini
 ```bash
-composer create-project laravel/laravel goptn
+composer composer install
 cd goptn
 ````
 
@@ -60,7 +50,7 @@ Edit file `.env`:
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=goptn
+DB_DATABASE=goptn_db
 DB_USERNAME=root
 DB_PASSWORD=
 ```
@@ -79,70 +69,16 @@ php artisan migrate
 
 ---
 
-## Setup Tailwind CSS
-
-Jalankan perintah:
-
-```bash
-npm install
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
-```
-
-Pastikan `resources/css/app.css` berisi Tailwind directives:
-
-```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-```
-
-Pastikan Vite include CSS & JS:
-`resources/views/welcome.blade.php`
-
-```blade
-@vite(['resources/css/app.css', 'resources/js/app.js'])
-```
-
----
-
-## Struktur View
-
-```
-resources/views/
- ├─ welcome.blade.php     ← main view
- └─ components/
-     ├─ navbar.blade.php
-     └─ hero.blade.php
-```
-
----
-
 ## Menjalankan Project
 
 ```bash
-npm run dev
 php artisan serve
 ```
 
-Akses aplikasi di browser:
+Akses aplikasi API di postman atau lainnya:
 
 ```
 http://127.0.0.1:8000
 ```
-
----
-
-## Status Project
-
-✔ Setup Laravel
-✔ Setup Database
-✔ Setup Tailwind Auto Reload
-✔ Halaman utama + komponen awal selesai
-⬜ Auth (Login/Register)
-⬜ Routing Pages
-⬜ CRUD & Dashboard
-
----
 
 ```
