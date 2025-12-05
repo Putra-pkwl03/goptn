@@ -16,15 +16,18 @@ class StudentAuthController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
+            'no_telp' => 'required|unique:users|digits_between:10,15',
             'password' => 'required|min:6'
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'no_telp' => $request->no_telp,
             'password' => Hash::make($request->password),
             'role' => 'student'
         ]);
+
 
         return response()->json([
             'message' => 'Registrasi berhasil, silakan login.'
@@ -71,6 +74,35 @@ class StudentAuthController extends Controller
             'entry_paths' => StudentEntryPath::where('user_id', $user->id)->pluck('path')
         ]);
     }
+
+
+        public function update(Request $request)
+    {
+        $user = $request->user(); 
+
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'no_telp' => 'required|digits_between:10,15|unique:users,no_telp,' . $user->id,
+            'password' => 'nullable|min:6'
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->no_telp = $request->no_telp;
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'Data berhasil diperbarui.',
+            'user' => $user
+        ]);
+    }
+
 
     public function logout(Request $request)
     {
