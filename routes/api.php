@@ -8,6 +8,7 @@ use App\Http\Controllers\StudentAuthController;
 use App\Http\Controllers\StudentSetupController;
 use App\Http\Controllers\CampusController;
 use App\Http\Controllers\MajorController;
+use App\Http\Controllers\JadwalAdmissionController;
 
 Route::post('auth/admin/login', [AdminAuthController::class, 'login']);
 
@@ -51,5 +52,13 @@ Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
     Route::get('/major/{id}', [MajorController::class, 'show']);
     Route::put('/major/{id}', [MajorController::class, 'update']);
     Route::delete('/major/{id}', [MajorController::class, 'destroy']);
+
+    #Jadwal CRUD
+    Route::get('/admisi', [JadwalAdmissionController::class, 'index']);
+    Route::post('/admisi', [JadwalAdmissionController::class, 'store']);
+    Route::get('/admisi/{id}', [JadwalAdmissionController::class, 'show']);
+    Route::put('/admisi/{id}', [JadwalAdmissionController::class, 'update']);
+    Route::delete('/admisi/{id}', [JadwalAdmissionController::class, 'destroy']);
+
 });
 
