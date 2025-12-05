@@ -24,6 +24,7 @@ Route::post('auth/student/login', [StudentAuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/student/me', [StudentAuthController::class, 'me']);
+    Route::put('/student/update', [StudentAuthController::class, 'update']);
     Route::post('auth/student/logout', [StudentAuthController::class, 'logout']);
 });
 
