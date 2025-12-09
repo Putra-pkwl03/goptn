@@ -14,7 +14,7 @@ Berikut Jadwal {{ $item->name }}:
 
 ---
 
-<x-mail::button :url="'https://goptn.id/login'">
+<x-mail::button :url="'https://goptn.siunjaya.id'">
 Lihat Detail di GoPTN
 </x-mail::button>
 

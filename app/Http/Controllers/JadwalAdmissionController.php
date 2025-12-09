@@ -38,7 +38,7 @@ class JadwalAdmissionController extends Controller
         }
         $admission = JadwalAdmission::create([
             'type' => $validated['type'],
-            'category' => $validated['category'] ?? null,
+            'category' => $validated['type'] === 'mandiri' ? 'mandiri' : ($validated['category'] ?? null),
             'campus_id' => $validated['campus_id'] ?? null,
         ]);
 

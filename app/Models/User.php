@@ -10,7 +10,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
-    protected $fillable = [
+       protected $fillable = [
         'name',
         'email',
         'no_telp',
@@ -24,6 +24,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+    ];
+
+      protected $casts = [
+        'wants_notification' => 'boolean',
+        'notification_type' => 'array',
     ];
 
     public function studentProfile()

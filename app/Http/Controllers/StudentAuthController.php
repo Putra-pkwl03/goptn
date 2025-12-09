@@ -104,20 +104,58 @@ class StudentAuthController extends Controller
     }
 
 
-   public function toggleNotification(Request $request)
+//    public function toggleNotification(Request $request)
+// {
+//     Log::info('Request body: ', $request->all());
+//     $user = auth()->user();
+//     Log::info('User before update: ', $user->toArray());
+
+//     $user->update([
+//         'wants_notification' => $request->wants_notification,
+//         'notification_type' => $request->notification_type,
+//         'campus_id' => $request->campus_id
+//     ]);
+
+//     $user->refresh();
+//     Log::info('User after update: ', $user->toArray());
+
+//     return response()->json([
+//         'message' => 'Notification preference updated.',
+//         'wants_notification' => $user->wants_notification,
+//         'type' => $user->notification_type,
+//         'campus_id' => $user->campus_id
+//     ]);
+// }
+
+
+public function toggleNotification(Request $request)
 {
     Log::info('Request body: ', $request->all());
     $user = auth()->user();
     Log::info('User before update: ', $user->toArray());
 
+    // Validasi request
+    $request->validate([
+        'wants_notification' => 'required|boolean',
+        'notification_type' => 'nullable|array',         // bisa banyak
+        'notification_type.*' => 'in:snbp,snbt,mandiri', // setiap elemen valid
+        'campus_id' => 'nullable|exists:campuses,id'
+    ]);
+
+    // Simpan notification_type sebagai JSON
     $user->update([
         'wants_notification' => $request->wants_notification,
-        'notification_type' => $request->notification_type,
+        'notification_type' => $request->notification_type, // cast ke array otomatis
         'campus_id' => $request->campus_id
     ]);
 
     $user->refresh();
     Log::info('User after update: ', $user->toArray());
+
+    // Dispatch job langsung jika aktif
+    if ($user->wants_notification && !empty($user->notification_type)) {
+        \App\Jobs\SendAdmissionReminderJob::dispatch();
+    }
 
     return response()->json([
         'message' => 'Notification preference updated.',
@@ -126,7 +164,6 @@ class StudentAuthController extends Controller
         'campus_id' => $user->campus_id
     ]);
 }
-
 
 
     public function logout(Request $request)

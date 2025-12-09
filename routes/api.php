@@ -42,7 +42,6 @@ Route::middleware('auth:sanctum')->group(function () {
 // Public routes (tidak perlu login)
 Route::get('/campus', [CampusController::class, 'index']);
 Route::get('/campus/{id}', [CampusController::class, 'show']);
-
 Route::get('/major', [MajorController::class, 'index']);
 Route::get('/major/{id}', [MajorController::class, 'show']);
 

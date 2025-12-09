@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('no_telp', 15)->nullable()->unique();
             $table->string('role')->default('student'); 
             $table->boolean('wants_notification')->default(false);
-            $table->enum('notification_type', ['snbp', 'snbt', 'mandiri'])->nullable();
+            $table->json('notification_type')->nullable();
             $table->unsignedBigInteger('campus_id')->nullable();
             $table->foreign('campus_id')->references('id')->on('campuses')->onDelete('set null');
 
