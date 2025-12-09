@@ -11,9 +11,13 @@ return new class extends Migration {
             $table->id();
             $table->string('nama_kampus');
             $table->string('akronim')->nullable();
-            $table->string('kota');
+            $table->string('alamat')->nullable(); // Tambah alamat
+            $table->string('kota')->nullable();
             $table->string('website')->nullable();
             $table->string('akreditasi')->nullable(); 
+            // $table->integer('total_program_studi')->nullable();
+            $table->text('deskripsi')->nullable(); // Tambah deskripsi
+            $table->json('jalur_masuk')->nullable(); // Contoh: ["SNBP", "SNBT", "Mandiri"]
             $table->timestamps();
         });
     }

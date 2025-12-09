@@ -38,19 +38,23 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/student/setup/delete', [StudentSetupController::class, 'destroy']);
 });
 
-Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
 
-    // Kampus CRUD
-    Route::get('/campus', [CampusController::class, 'index']);
+// Public routes (tidak perlu login)
+Route::get('/campus', [CampusController::class, 'index']);
+Route::get('/campus/{id}', [CampusController::class, 'show']);
+
+Route::get('/major', [MajorController::class, 'index']);
+Route::get('/major/{id}', [MajorController::class, 'show']);
+
+// Admin routes (CRUD lengkap, harus login)
+Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
+    // Kampus
     Route::post('/campus', [CampusController::class, 'store']);
-    Route::get('/campus/{id}', [CampusController::class, 'show']);
     Route::put('/campus/{id}', [CampusController::class, 'update']);
     Route::delete('/campus/{id}', [CampusController::class, 'destroy']);
 
-    // Jurusan CRUD
-    Route::get('/major', [MajorController::class, 'index']);
+    // Jurusan
     Route::post('/major', [MajorController::class, 'store']);
-    Route::get('/major/{id}', [MajorController::class, 'show']);
     Route::put('/major/{id}', [MajorController::class, 'update']);
     Route::delete('/major/{id}', [MajorController::class, 'destroy']);
 

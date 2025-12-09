@@ -9,17 +9,33 @@ class CampusController extends Controller
 {
     public function index()
     {
-        return Campus::with('majors')->get();
+        $campuses = Campus::with('majors')->get();
+        $campuses->map(function ($campus) {
+            $campus->total_program_studi = $campus->majors->count();
+            return $campus;
+        });
+
+        return response()->json($campuses);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'nama_kampus' => 'required',
-            'kota' => 'required'
+            'nama_kampus' => 'required|string|max:255',
+            'kota' => 'required|string|max:255',
+            'alamat' => 'nullable|string',
+            'website' => 'nullable|string',
+            'akreditasi' => 'nullable|string',
+            'deskripsi' => 'nullable|string',
+            'jalur_masuk' => 'nullable|array', 
         ]);
+        $data = $request->all();
+        if (isset($data['jalur_masuk'])) {
+            $data['jalur_masuk'] = json_encode($data['jalur_masuk']);
+        }
 
-        return Campus::create($request->all());
+        $campus = Campus::create($data);
+        return response()->json($campus, 201);
     }
 
     public function show($id)
@@ -28,23 +44,29 @@ class CampusController extends Controller
 
         if (!$campus) return response()->json(['message' => 'Kampus tidak ditemukan'], 404);
 
-        return $campus;
+        $campus->total_program_studi = $campus->majors->count();
+
+        return response()->json($campus);
     }
 
     public function update(Request $request, $id)
     {
         $campus = Campus::find($id);
-
         if (!$campus) return response()->json(['message' => 'Kampus tidak ditemukan'], 404);
 
-        $campus->update($request->all());
+        $data = $request->all();
+        if (isset($data['jalur_masuk'])) {
+            $data['jalur_masuk'] = json_encode($data['jalur_masuk']);
+        }
+
+        $campus->update($data);
+
         return response()->json(['message' => 'Data kampus diperbarui']);
     }
 
     public function destroy($id)
     {
         $campus = Campus::find($id);
-
         if (!$campus) return response()->json(['message' => 'Kampus tidak ditemukan'], 404);
 
         $campus->delete();

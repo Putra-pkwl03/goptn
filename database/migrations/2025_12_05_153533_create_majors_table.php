@@ -14,6 +14,9 @@ return new class extends Migration {
             $table->string('fakultas')->nullable();
             $table->string('akreditasi')->nullable();
             $table->integer('kapasitas')->nullable();
+            $table->integer('peminat')->nullable();  
+            $table->integer('diterima')->nullable();  
+            $table->string('tingkat')->nullable();    
             $table->timestamps();
         });
     }

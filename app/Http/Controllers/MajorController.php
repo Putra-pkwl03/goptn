@@ -9,17 +9,25 @@ class MajorController extends Controller
 {
     public function index()
     {
-        return Major::with('campus')->get();
+        $majors = Major::with('campus')->get();
+        return response()->json($majors);
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'campus_id' => 'required|exists:campuses,id',
-            'nama_jurusan' => 'required'
+            'nama_jurusan' => 'required|string|max:255',
+            'fakultas' => 'nullable|string|max:255',
+            'akreditasi' => 'nullable|string|max:10',
+            'kapasitas' => 'nullable|integer|min:0',
+            'peminat' => 'nullable|integer|min:0',
+            'diterima' => 'nullable|integer|min:0',
+            'tingkat' => 'nullable|string|in:sarjana,diploma',
         ]);
 
-        return Major::create($request->all());
+        $major = Major::create($request->all());
+        return response()->json($major, 201);
     }
 
     public function show($id)
@@ -28,7 +36,7 @@ class MajorController extends Controller
 
         if (!$major) return response()->json(['message' => 'Jurusan tidak ditemukan'], 404);
 
-        return $major;
+        return response()->json($major);
     }
 
     public function update(Request $request, $id)
@@ -36,6 +44,17 @@ class MajorController extends Controller
         $major = Major::find($id);
 
         if (!$major) return response()->json(['message' => 'Jurusan tidak ditemukan'], 404);
+
+        $request->validate([
+            'campus_id' => 'sometimes|exists:campuses,id',
+            'nama_jurusan' => 'sometimes|string|max:255',
+            'fakultas' => 'nullable|string|max:255',
+            'akreditasi' => 'nullable|string|max:10',
+            'kapasitas' => 'nullable|integer|min:0',
+            'peminat' => 'nullable|integer|min:0',
+            'diterima' => 'nullable|integer|min:0',
+            'tingkat' => 'nullable|string|in:sarjana,diploma',
+        ]);
 
         $major->update($request->all());
 
